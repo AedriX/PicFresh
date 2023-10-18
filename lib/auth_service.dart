@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:picfresh/sceens/login_page.dart';
-import 'sceens/home__page.dart';
+import 'package:picfresh/screens/login_page.dart';
+import 'screens/home__page.dart';
 
 class AuthServices {
   handleAuthState() {
@@ -10,7 +10,7 @@ class AuthServices {
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (BuildContext context, snapshot) {
           if (snapshot.hasData) {
-            return const MainScreen();
+            return MainScreen();
           } else {
             return const LoginPage();
           }
