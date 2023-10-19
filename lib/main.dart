@@ -1,21 +1,30 @@
 import 'package:flutter/material.dart';
-import 'routes.dart';
-import 'package:picfresh/screens/splash/splash_screen.dart';
-import 'package:picfresh/theme.dart';
+import 'package:picfresh/auth_service.dart';
+import "package:firebase_core/firebase_core.dart";
+import 'onboarding.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    final appThemeData = ThemeData(
+      primarySwatch: Colors.orange,
+      primaryColor: Colors.orange,
+      scaffoldBackgroundColor: Colors.white,
+      visualDensity: VisualDensity.adaptivePlatformDensity,
+    );
+
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
       title: 'PicFresh',
-      theme: theme(),
-      initialRoute: SplashScreen.routeName,
-      routes: routes,
+      theme: appThemeData,
+      debugShowCheckedModeBanner: false,
+      home: OnBoardingScreen(),
     );
   }
 }
