@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:picfresh/screens/home/home_screen.dart';
-//import 'package:picfresh/helper/keyboard.dart';
+import 'package:picfresh/helper/keyboard.dart';
 
 import '../../../components/custom_surfix_icon.dart';
-import '../../../components/default_button.dart';
 import '../../../components/form_error.dart';
 import '../../../constants.dart';
 import '../../../size_config.dart';
@@ -47,16 +46,31 @@ class _SignUpFormState extends State<SignUpForm> {
           buildConfPasswordFormField(),
           FormError(errors: errors),
           SizedBox(height: getProportionateScreenHeight(40)),
-          DefaultButton(
-            text: "Continue",
-            press: () {
-              if (_formKey.currentState!.validate()) {
-                _formKey.currentState!.save();
-                // if all are valid then go to success screen
-                // KeyboardUtil.hideKeyboard(context);
-                Navigator.pushNamed(context, HomeScreen.routeName);
-              }
-            },
+          SizedBox(
+            height: 50,
+            width: MediaQuery.of(context).size.width,
+            child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    elevation: 10,
+                    backgroundColor: Color(0xD6ffd732),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20))),
+                onPressed: () {
+                  if (_formKey.currentState!.validate()) {
+                  _formKey.currentState!.save();
+                  // if all are valid then go to success screen
+                  KeyboardUtil.hideKeyboard(context);
+                  Navigator.pushNamed(
+                    context, HomeScreen.routeName);
+                  }
+                },
+                child: const Text(
+                  "Continue",
+                  style: TextStyle(
+                      fontSize: 22,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,),
+              )),
           ),
         ],
       ),

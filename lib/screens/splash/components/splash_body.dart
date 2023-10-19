@@ -3,7 +3,7 @@ import 'package:picfresh/constants.dart';
 import 'package:picfresh/screens/sign_in/sign_in_screen.dart';
 import 'package:picfresh/size_config.dart';
 
-import '../../../components/default_button.dart';
+//import '../../../components/default_button.dart';
 import '../components/splash_content.dart';
 
 class Body extends StatefulWidget {
@@ -65,11 +65,26 @@ class _BodyState extends State<Body> {
                       ),
                     ),
                     Spacer(flex: 3),
-                    DefaultButton(
-                      text: "Continue",
-                      press: () {
-                        Navigator.pushNamed(context, SignInScreen.routeName);
-                      },
+                    SizedBox(
+                      height: 50,
+                      width: MediaQuery.of(context).size.width,
+                      child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              elevation: 10,
+                              backgroundColor: Color(0xD6ffd732),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20))),
+                          onPressed: () {
+                            Navigator.pushNamed(
+                                context, SignInScreen.routeName);
+                          },
+                          child: const Text(
+                            "Continue",
+                            style: TextStyle(
+                                fontSize: 22,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,),
+                          )),
                     ),
                     Spacer(),
                   ],

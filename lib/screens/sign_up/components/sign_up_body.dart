@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-// import 'package:yumme_app/components/default_button.dart';
 import 'package:picfresh/screens/sign_up/components/sign_up_form.dart';
+import 'package:picfresh/auth_service.dart';
 
-// import '../../../components/custom_surfix_icon.dart';
-// import '../../../components/form_error.dart';
 import '../../../components/socal_card.dart';
 import '../../../constants.dart';
 import '../../../size_config.dart';
@@ -40,15 +38,9 @@ class Body extends StatelessWidget {
                       children: [
                         SocalCard(
                           icon: "assets/icons/google-icon.svg",
-                          press: () {},
-                        ),
-                        SocalCard(
-                          icon: "assets/icons/facebook-2.svg",
-                          press: () {},
-                        ),
-                        SocalCard(
-                          icon: "assets/icons/twitter.svg",
-                          press: () {},
+                          press: () {
+                            AuthServices().signInWithGoogle();
+                          },
                         ),
                       ],
                     ),

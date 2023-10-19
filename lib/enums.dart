@@ -1,1 +1,1 @@
-enum MenuState { home, article, recipe, favorite, profile }
+enum MenuState { home, article, camera, recipe, favorite, profile }

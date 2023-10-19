@@ -5,7 +5,7 @@ import 'package:picfresh/helper/keyboard.dart';
 import 'package:picfresh/screens/forgot_password/forgot_password_screen.dart';
 import 'package:picfresh/screens/login_success/login_success_screen.dart';
 
-import '../../../components/default_button.dart';
+//import '../../../components/default_button.dart';
 import '../../../constants.dart';
 import '../../../size_config.dart';
 
@@ -70,17 +70,43 @@ class _SignFormState extends State<SignForm> {
           ),
           FormError(errors: errors),
           SizedBox(height: getProportionateScreenHeight(20)),
-          DefaultButton(
-            text: "Continue",
-            press: () {
-              if (_formKey.currentState!.validate()) {
-                _formKey.currentState!.save();
-                // if all are valid then go to success screen
-                KeyboardUtil.hideKeyboard(context);
-                Navigator.pushNamed(context, LoginSuccessScreen.routeName);
-              }
-            },
+          SizedBox(
+            height: 50,
+            width: MediaQuery.of(context).size.width,
+            child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    elevation: 10,
+                    backgroundColor: Color(0xD6ffd732),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20))),
+                onPressed: () {
+                  if (_formKey.currentState!.validate()) {
+                  _formKey.currentState!.save();
+                  // if all are valid then go to success screen
+                  KeyboardUtil.hideKeyboard(context);
+                  Navigator.pushNamed(
+                    context, LoginSuccessScreen.routeName);
+                  }
+                },
+                child: const Text(
+                  "Continue",
+                  style: TextStyle(
+                      fontSize: 22,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,),
+              )),
           ),
+          //DefaultButton(
+            //text: "Continue",
+            //press: () {
+              //if (_formKey.currentState!.validate()) {
+                //_formKey.currentState!.save();
+                // if all are valid then go to success screen
+                //KeyboardUtil.hideKeyboard(context);
+                //Navigator.pushNamed(context, LoginSuccessScreen.routeName);
+              //}
+            //},
+          //),
         ],
       ),
     );

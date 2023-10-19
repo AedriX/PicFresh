@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-/*import 'package:picfresh/constants.dart';*/
 import 'routes.dart';
 import 'package:picfresh/screens/splash/splash_screen.dart';
 import 'package:picfresh/theme.dart';

@@ -25,9 +25,14 @@ class WelcomeBanner extends StatelessWidget {
         TextSpan(
           style: TextStyle(color: Colors.white),
           children: [
-            TextSpan(text: "Hi there! Welcome back to\n"),
             TextSpan(
-              text: "YumMe",
+              text: "Hi there! Welcome to\n",
+              style: TextStyle(
+                fontSize: getProportionateScreenWidth(15)
+              )
+            ),
+            TextSpan(
+              text: "PicFresh",
               style: TextStyle(
                 fontSize: getProportionateScreenWidth(24),
                 fontWeight: FontWeight.bold,

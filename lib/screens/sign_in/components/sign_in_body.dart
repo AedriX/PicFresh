@@ -3,6 +3,7 @@ import 'package:picfresh/components/no_account_text.dart';
 import 'package:picfresh/components/socal_card.dart';
 import '../../../size_config.dart';
 import 'sign_in_form.dart';
+import 'package:picfresh/auth_service.dart';
 
 class Body extends StatelessWidget {
   @override
@@ -37,15 +38,9 @@ class Body extends StatelessWidget {
                   children: [
                     SocalCard(
                       icon: "assets/icons/google-icon.svg",
-                      press: () {},
-                    ),
-                    SocalCard(
-                      icon: "assets/icons/facebook-2.svg",
-                      press: () {},
-                    ),
-                    SocalCard(
-                      icon: "assets/icons/twitter.svg",
-                      press: () {},
+                      press: () {
+                        AuthServices().signInWithGoogle();
+                      },
                     ),
                   ],
                 ),
