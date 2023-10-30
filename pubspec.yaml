@@ -40,10 +40,20 @@ dependencies:
   google_sign_in: ^6.1.5
   flutter_spinkit: ^5.2.0
   flutter_svg: ^1.0.3
+  shared_preferences: ^2.2.2
+  http: ^1.1.0
+  cloud_firestore: ^4.12.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_launcher_icons: ^0.13.1
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/picappslogo.png"
+  adaptive_icon_forground: "assets/picappslogo.png"
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -67,8 +77,6 @@ flutter:
   assets:
     - assets/google.png
     - assets/images/
-    - assets/images/foods/
-    - assets/images/article_pic/
     - assets/images/splash_pic/
     - assets/icons/
 

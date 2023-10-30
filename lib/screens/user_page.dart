@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:picfresh/auth_service.dart';
+import 'package:picfresh/services/auth_service.dart';
 
 class Profile extends StatefulWidget {
   @override
@@ -18,6 +18,13 @@ class _ProfileState extends State<Profile> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            SizedBox(
+              height: 50,
+            ),
+            Image.network(FirebaseAuth.instance.currentUser!.photoURL!),
+            SizedBox(
+              height: 20,
+            ),
             Text(
               FirebaseAuth.instance.currentUser!.displayName!,
               style: const TextStyle(
@@ -27,6 +34,30 @@ class _ProfileState extends State<Profile> {
             ),
             const SizedBox(
               height: 10,
+            ),
+            Container(
+              margin: EdgeInsets.all(20),
+              //color: Colors.blue,
+              child: Column(children: [
+                ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        minimumSize: Size(50, 55),
+                        elevation: 10,
+                        backgroundColor: Colors.grey,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10))),
+                    onPressed: null,
+                    child: const Row(
+                      children: [
+                        Icon(
+                          Icons.account_circle_outlined,
+                          size: 35,
+                          color: Colors.black,
+                        ),
+                        Text("data"),
+                      ],
+                    ))
+              ]),
             ),
             Text(
               FirebaseAuth.instance.currentUser!.email!,
