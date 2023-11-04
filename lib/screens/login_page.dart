@@ -24,7 +24,13 @@ class LoginPage extends StatelessWidget {
             child: Column(
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(top: 36),
+                  padding: const EdgeInsets.only(top: 20),
+                  child: Image.asset(
+                    logo,
+                    height: 45),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 20),
                   child: Text(
                     "Hello, there!",
                     style: TextStyle(

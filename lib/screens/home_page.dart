@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:picfresh/screens/detail_page.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:picfresh/model/get_star.dart';
+import 'package:picfresh/screens/detail_pageRec.dart';
+import 'package:picfresh/theme.dart';
+import 'package:picfresh/widgets/search_field.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class HomePage extends StatefulWidget {
@@ -13,49 +17,21 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final Stream<QuerySnapshot> recipe =
       FirebaseFirestore.instance.collection("recipe").snapshots();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Colors.white,
-        title: //Search Bar (Start)
-            const SizedBox(
-          width: double.infinity,
-          height: 45,
-          child: Center(
-            child: TextField(
-              decoration: InputDecoration(
-                fillColor: Colors.grey,
-                contentPadding: EdgeInsets.all(10),
-                enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                        width: 3, color: Color.fromARGB(255, 211, 211, 211)),
-                    borderRadius: BorderRadius.all(Radius.circular(10))),
-                border: OutlineInputBorder(
-                    borderSide: BorderSide(
-                        width: 3, color: Color.fromARGB(255, 211, 211, 211)),
-                    borderRadius: BorderRadius.all(Radius.circular(10))),
-                hintText: "Looking for something?",
-                prefixIcon: Icon(Icons.search),
-              ),
-            ),
-          ),
-        ),
-        //Search Bar (End),,
-      ),
+      appBar: _appBar(),
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
-            expandedHeight: MediaQuery.of(context).size.height / 2,
+            expandedHeight: MediaQuery.of(context).size.height / 2.5,
             elevation: 0,
             pinned: true,
             backgroundColor: Colors.white,
             flexibleSpace: FlexibleSpaceBar(
               collapseMode: CollapseMode.pin,
               expandedTitleScale: 1,
-              titlePadding: const EdgeInsets.only(left: 25),
+              titlePadding: const EdgeInsets.only(left: 25, bottom: 15),
               centerTitle: false,
               title: const Text(
                 "New Recipes",
@@ -65,34 +41,9 @@ class _HomePageState extends State<HomePage> {
                 padding: const EdgeInsets.all(15),
                 child: Column(
                   children: [
-                    //Bagian Kotak Warna kuning (Start)
-                    Container(
-                      width: double.infinity,
-                      height: MediaQuery.of(context).size.height / 6,
-                      padding: const EdgeInsets.only(top: 20, bottom: 20),
-                      child: Card(
-                        color: Color.fromARGB(255, 255, 217, 0),
-                        elevation: 0,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20)),
-                        child: Container(
-                          padding: const EdgeInsets.all(15),
-                          child: Column(
-                            children: <Widget>[
-                              Container(
-                                width: double.infinity,
-                                child: Text(
-                                  "Hi ${FirebaseAuth.instance.currentUser!.displayName!}!",
-                                  style: const TextStyle(
-                                      color: Colors.white, fontSize: 18),
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
+                    SizedBox(
+                      height: 10,
                     ),
-                    //Bagian Kotak Warna kuning (End)
                     Container(
                       width: double.infinity,
                       padding: EdgeInsets.only(left: 10, bottom: 10),
@@ -100,6 +51,9 @@ class _HomePageState extends State<HomePage> {
                         "Recommended Recipes",
                         style: TextStyle(fontSize: 20),
                       ),
+                    ),
+                    SizedBox(
+                      height: 10,
                     ),
                     //Pemanggilan Query Recipes dan Membuat ListView(Start)
                     SizedBox(
@@ -128,6 +82,8 @@ class _HomePageState extends State<HomePage> {
                               scrollDirection: Axis.horizontal,
                               itemCount: data.size < 5 ? data.size : 5,
                               itemBuilder: (context, index) {
+                                double staraverage =
+                                    avgRating(data.docs[index]["rating"], 4);
                                 //Bagian tampilan Recommended Recipes (Start)
                                 return Container(
                                   padding: EdgeInsets.all(3),
@@ -149,17 +105,51 @@ class _HomePageState extends State<HomePage> {
                                                 2,
                                         child: Column(
                                           children: [
-                                            Image.network(
-                                              "${data.docs[index]["imageUrl"]}",
+                                            ClipRRect(
+                                              borderRadius: BorderRadius.only(
+                                                  topLeft: Radius.circular(10),
+                                                  topRight:
+                                                      Radius.circular(10)),
+                                              child: Image.network(
+                                                "${data.docs[index]["imageUrl"]}",
+                                                fit: BoxFit.cover,
+                                                height: 100,
+                                                width: double.infinity,
+                                              ),
                                             ),
-                                            const SizedBox(
+                                            Spacer(),
+                                            Container(
+                                              width: double.infinity,
+                                              height: 40,
+                                              padding:
+                                                  EdgeInsets.only(left: 12),
+                                              child: Text(
+                                                "${data.docs[index]["name"]}",
+                                                style: TextStyle(fontSize: 18),
+                                              ),
+                                            ),
+                                            SizedBox(
                                               height: 5,
                                             ),
-                                            Text("${data.docs[index]["name"]}"),
                                             Row(
                                               children: [
+                                                SizedBox(
+                                                  width: 10,
+                                                ),
+                                                RatingBar.builder(
+                                                    itemSize: 20,
+                                                    ignoreGestures: true,
+                                                    initialRating: staraverage,
+                                                    allowHalfRating: true,
+                                                    itemBuilder: (context, _) =>
+                                                        Icon(
+                                                          Icons.star,
+                                                          color: Colors.amber,
+                                                        ),
+                                                    onRatingUpdate:
+                                                        (rating) {}),
                                                 Text(
-                                                  "Rating ${data.docs[index]["rating"]}",
+                                                  "(${staraverage.toStringAsPrecision(2)})",
                                                   textAlign: TextAlign.left,
                                                 ),
                                               ],
@@ -177,7 +167,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                     //Pemanggilan Query Recipes dan Membuat ListView(End)
-                    Spacer()
+                    Spacer(),
                   ],
                 ),
               ),
@@ -186,7 +176,7 @@ class _HomePageState extends State<HomePage> {
           SliverToBoxAdapter(
             //Pemanggilan Query Recipes dan Membuat ListView(Start)
             child: Container(
-              height: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height,
               margin: const EdgeInsets.only(left: 15, right: 15),
               child: StreamBuilder<QuerySnapshot>(
                 stream: recipe,
@@ -214,6 +204,8 @@ class _HomePageState extends State<HomePage> {
                               crossAxisCount: 2),
                       itemCount: data.size < 20 ? data.size : 20,
                       itemBuilder: (context, index) {
+                        double staraverage =
+                            avgRating(data.docs[index]["rating"], 4);
                         //Bagian tampilan New Recipes (Start)
                         return GridTile(
                           child: Container(
@@ -224,30 +216,63 @@ class _HomePageState extends State<HomePage> {
                                   borderRadius: BorderRadius.circular(10)),
                               child: InkWell(
                                 onTap: () => Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => DetailPage(
-                                            documentSnapshot:
-                                                data.docs[index]))),
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => DetailPage(
+                                        documentSnapshot: data.docs[index]),
+                                  ),
+                                ),
                                 child: Ink(
                                   child: Column(
                                     children: [
-                                      Image.network(
-                                        "${data.docs[index]["imageUrl"]}",
+                                      ClipRRect(
+                                        borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(10),
+                                            topRight: Radius.circular(10)),
+                                        child: Image.network(
+                                          "${data.docs[index]["imageUrl"]}",
+                                          height: 100,
+                                          width: double.infinity,
+                                          fit: BoxFit.cover,
+                                        ),
                                       ),
                                       const SizedBox(
                                         height: 5,
                                       ),
-                                      Text("${data.docs[index]["name"]}"),
+                                      Container(
+                                        width: double.infinity,
+                                        height: 40,
+                                        padding: EdgeInsets.only(left: 12),
+                                        child: Text(
+                                          "${data.docs[index]["name"]}",
+                                          style: TextStyle(fontSize: 16),
+                                        ),
+                                      ),
+                                      Spacer(),
                                       Row(
                                         children: [
+                                          SizedBox(
+                                            width: 10,
+                                          ),
+                                          RatingBar.builder(
+                                              itemSize: 14,
+                                              ignoreGestures: true,
+                                              initialRating: staraverage,
+                                              allowHalfRating: true,
+                                              itemBuilder: (context, _) => Icon(
+                                                    Icons.star,
+                                                    color: Colors.amber,
+                                                  ),
+                                              onRatingUpdate: (rating) {}),
                                           Text(
-                                            "Rating ${data.docs[index]["rating"]}",
+                                            "(${staraverage.toStringAsPrecision(2)})",
                                             textAlign: TextAlign.left,
                                           ),
                                         ],
                                       ),
-                                      Spacer(),
+                                      SizedBox(
+                                        height: 6,
+                                      )
                                     ],
                                   ),
                                 ),
@@ -264,6 +289,69 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
+    );
+  }
+
+  PreferredSize _appBar() {
+    return PreferredSize(
+      preferredSize: Size.fromHeight(180),
+      child: Container(
+        decoration: _boxDecoration(),
+        child: Column(
+          children: [
+            _topBar(),
+            _greeting(),
+            SizedBox(height: 5),
+            const SearchField(),
+          ],
+        ),
+      ),
+    );
+  }
+
+  BoxDecoration _boxDecoration() {
+    return BoxDecoration(
+        borderRadius: BorderRadius.vertical(bottom: Radius.circular(15)),
+        gradient: LinearGradient(
+          colors: [
+            primaryColor,
+            primaryColor,
+          ],
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+        ));
+  }
+
+  Widget _greeting() {
+    return Row(
+      children: [
+        Padding(
+          padding:
+              const EdgeInsets.only(top: 5, bottom: 5, left: 20, right: 20),
+          child: Text(
+            'Hello, \n${FirebaseAuth.instance.currentUser!.displayName!}!',
+            style: TextStyle(
+              fontSize: 25,
+              fontWeight: FontWeight.bold,
+              color: Colors.white.withOpacity(0.9),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _topBar() {
+    return Row(
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(top: 35, bottom: 10, left: 140),
+          child: Image.asset(
+            ylogo,
+            height: 25,
+          ),
+        )
+      ],
     );
   }
 }

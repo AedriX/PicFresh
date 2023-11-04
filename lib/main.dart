@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import "package:firebase_core/firebase_core.dart";
-import 'services/auth_service.dart';
+import 'package:picfresh/services/auth_service.dart';
 import 'onboarding.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -29,9 +29,8 @@ class MyApp extends StatelessWidget {
       title: 'PicFresh',
       theme: appThemeData,
       debugShowCheckedModeBanner: false,
-      home:
+      home: //OnBoardingScreen(),
           isViewed != 0 ? OnBoardingScreen() : AuthServices().handleAuthState(),
-      //home: const HomePage(),
     );
   }
 }

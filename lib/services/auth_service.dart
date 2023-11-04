@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:picfresh/screens/login_page.dart';
-import '../main_screen.dart';
+import 'package:picfresh/base_screen.dart';
 
 class AuthServices {
   handleAuthState() {
