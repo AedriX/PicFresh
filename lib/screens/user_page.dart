@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:picfresh/services/auth_service.dart';
 import 'package:picfresh/theme.dart';
 
@@ -49,6 +49,7 @@ class _ProfileState extends State<Profile> {
             ),
             Text(
               FirebaseAuth.instance.currentUser!.email!,
+              //"email@gmail.com",
               style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
@@ -126,11 +127,13 @@ class _ProfileState extends State<Profile> {
       child: Column(
         children: [
           Image.network(FirebaseAuth.instance.currentUser!.photoURL!),
+          //Image.asset('assets/images/ypiclogo.png'),
           SizedBox(
             height: 20,
           ),
           Text(
             FirebaseAuth.instance.currentUser!.displayName!,
+            //"Name",
             style: const TextStyle(
                 fontSize: 30,
                 fontWeight: FontWeight.bold,

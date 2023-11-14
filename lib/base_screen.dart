@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:picfresh/screens/article_page.dart';
 import 'package:picfresh/screens/camera_page.dart';
+import 'package:picfresh/screens/comingsoon_page.dart';
 import 'package:picfresh/screens/home_page.dart';
 import 'package:picfresh/screens/user_page.dart';
 import 'package:picfresh/theme.dart';
@@ -18,8 +19,8 @@ class _MainScreenState extends State<MainScreen> {
   static List<Widget> _widgetOptions = <Widget>[
     HomePage(),
     ArticlePage(),
-    CameraPage(),
-    HomePage(),
+    CameraListItemPage(),
+    ComingSoonPage(),
     Profile(),
   ];
 

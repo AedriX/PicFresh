@@ -46,6 +46,9 @@ dependencies:
   flutter_rating_bar: ^4.0.1
   camera: ^0.10.5+5
   path_provider: ^2.1.1
+  provider: ^6.0.5
+  tflite_flutter: ^0.10.3
+  tflite: ^1.1.2
 
 dev_dependencies:
   flutter_test:
@@ -80,7 +83,9 @@ flutter:
   assets:
     - assets/google.png
     - assets/images/
+    - assets/model/
     - assets/images/splash_pic/
+    - assets/images/items/
     - assets/icons/
 
   # An image asset can refer to one or more resolution-specific "variants", see

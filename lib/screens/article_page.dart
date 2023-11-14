@@ -89,7 +89,7 @@ class _ArticlePageState extends State<ArticlePage> {
                                 ),
                               ),
                               SizedBox(
-                                height: 5,
+                                height: 3,
                               ),
                               Container(
                                 width: double.infinity,
@@ -111,7 +111,8 @@ class _ArticlePageState extends State<ArticlePage> {
                                 ),
                               ),
                               Container(
-                                margin: EdgeInsets.all(12),
+                                margin: EdgeInsets.only(
+                                    left: 12, right: 12, top: 5),
                                 child: Text(
                                   data.docs[index]["description"],
                                   overflow: TextOverflow.ellipsis,

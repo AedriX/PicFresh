@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:picfresh/model/get_star.dart';
+import 'package:picfresh/theme.dart';
 
 class DetailPage extends StatelessWidget {
   final QueryDocumentSnapshot documentSnapshot;
@@ -18,15 +20,44 @@ class DetailPage extends StatelessWidget {
         body: CustomScrollView(
       slivers: [
         SliverAppBar(
+          systemOverlayStyle:
+              SystemUiOverlayStyle(statusBarBrightness: Brightness.dark),
           elevation: 0,
-          expandedHeight: 250,
+          expandedHeight: 275,
+          pinned: true,
+          stretch: true,
           backgroundColor: Colors.white,
           flexibleSpace: FlexibleSpaceBar(
             background: Image.network(
               documentSnapshot["imageUrl"],
               fit: BoxFit.cover,
             ),
-            collapseMode: CollapseMode.pin,
+            //collapseMode: CollapseMode.pin,
+            stretchModes: [
+              StretchMode.blurBackground,
+              StretchMode.zoomBackground,
+            ],
+          ),
+          bottom: PreferredSize(
+            preferredSize: Size.fromHeight(0),
+            child: Container(
+              height: 32.0,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(30),
+                    topRight: Radius.circular(30),
+                  )),
+              child: Container(
+                width: 40,
+                height: 5,
+                decoration: BoxDecoration(
+                  color: primaryColor,
+                  borderRadius: BorderRadius.circular(100),
+                ),
+              ),
+            ),
           ),
         ),
         SliverToBoxAdapter(
@@ -37,11 +68,11 @@ class DetailPage extends StatelessWidget {
                   padding: EdgeInsets.only(left: 20, top: 20, bottom: 10),
                   child: Text(
                     documentSnapshot["name"],
-                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.w500),
+                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
                   )),
               Container(
                   width: double.infinity,
-                  padding: EdgeInsets.only(left: 20),
+                  padding: EdgeInsets.only(left: 20, bottom: 20),
                   child: Row(
                     children: [
                       RatingBar.builder(
@@ -54,118 +85,114 @@ class DetailPage extends StatelessWidget {
                                 color: Colors.amber,
                               ),
                           onRatingUpdate: (rating) {}),
-                      Text(
-                        "(${staraverage.toStringAsPrecision(2)}) ${totalreview.toInt()}",
-                        textAlign: TextAlign.left,
+                      Padding(
+                        padding: const EdgeInsets.only(left: 10),
+                        child: Text(
+                          "(${staraverage.toStringAsPrecision(2)}) ${totalreview.toInt()}",
+                          textAlign: TextAlign.left,
+                        ),
                       ),
                     ],
                   )),
-              Container(
-                  width: double.infinity,
-                  margin: EdgeInsets.only(left: 20, top: 20),
-                  child: Text(
-                    documentSnapshot["description"],
-                    style: TextStyle(fontSize: 18),
-                  )),
-              SizedBox(
-                height: 30,
+              Padding(
+                padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
+                child: const Divider(
+                  color: Color(0xFF3C3C3C),
+                  height: 2,
+                ),
               ),
               Text(
-                "INGREDIENT",
-                style: TextStyle(fontSize: 24),
-              ),
-              Container(
-                width: double.infinity,
-                height: 3,
-                decoration: BoxDecoration(
-                  color: Colors.black,
-                  borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(50),
-                      bottomRight: Radius.circular(50)),
+                "Description",
+                textAlign: TextAlign.left,
+                style: TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.w600,
                 ),
-                margin: EdgeInsets.only(left: 20, right: 20),
               ),
               Container(
-                  margin: EdgeInsets.only(left: 20),
-                  height: 40 * Ingredient.length.toDouble(),
+                  width: double.infinity,
+                  //margin: EdgeInsets.only(left: 20, top: 20),
+                  child: Padding(
+                    padding:
+                        const EdgeInsets.only(top: 10, left: 20, right: 20),
+                    child: Text(
+                      documentSnapshot["description"],
+                      textAlign: TextAlign.justify,
+                      style: TextStyle(fontSize: 17),
+                    ),
+                  )),
+              SizedBox(height: 30),
+              Padding(
+                padding: const EdgeInsets.only(left: 20, right: 20),
+                child: const Divider(
+                  color: Color(0xFF3C3C3C),
+                  height: 2,
+                ),
+              ),
+              SizedBox(height: 30),
+              Text(
+                "Ingredients",
+                textAlign: TextAlign.left,
+                style: TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              Container(
+                  padding: EdgeInsets.only(left: 20, right: 20),
+                  //margin: EdgeInsets.only(left: 20),
+                  height: 65 * Ingredient.length.toDouble(),
                   child: ListView.builder(
                       physics: NeverScrollableScrollPhysics(),
                       itemCount: Ingredient.length,
                       itemBuilder: (context, index) {
-                        return Row(
-                          children: [
-                            Image.asset(
-                              "assets/icons/leaf.png",
-                              height: 25,
+                        return ListTile(
+                          title: Text(
+                            Ingredient[index],
+                            textAlign: TextAlign.justify,
+                            style: TextStyle(
+                              fontSize: 16,
                             ),
-                            Text(Ingredient[index])
-                          ],
+                          ),
+                          leading: Icon(
+                            Icons.brightness_1,
+                          ),
                         );
                       })),
-              Text(
-                "HOW TO COOK",
-                style: TextStyle(fontSize: 24),
-              ),
-              Container(
-                width: double.infinity,
-                height: 3,
-                decoration: BoxDecoration(
-                  color: Colors.black,
-                  borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(50),
-                      bottomRight: Radius.circular(50)),
+              Padding(
+                padding: const EdgeInsets.only(left: 20, right: 20),
+                child: const Divider(
+                  color: Color(0xFF3C3C3C),
+                  height: 2,
                 ),
-                margin: EdgeInsets.only(left: 20, right: 20),
+              ),
+              SizedBox(height: 30),
+              Text(
+                "Steps",
+                textAlign: TextAlign.left,
+                style: TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
               Container(
-                  margin: EdgeInsets.only(left: 20),
-                  height: 40 * Ingredient.length.toDouble(),
+                  margin: EdgeInsets.only(left: 20, right: 20),
+                  height: 80 * Instruction.length.toDouble(),
                   child: ListView.builder(
                       physics: NeverScrollableScrollPhysics(),
                       itemCount: Instruction.length,
                       itemBuilder: (context, index) {
-                        return Row(
-                          children: [
-                            Image.asset(
-                              "assets/icons/leaf.png",
-                              height: 25,
+                        return ListTile(
+                          title: Text(
+                            Instruction[index],
+                            textAlign: TextAlign.justify,
+                            style: TextStyle(
+                              fontSize: 16,
                             ),
-                            Container(
-                              child: Text(
-                                Instruction[index],
-                                maxLines: 3,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            )
-                          ],
+                          ),
+                          leading: Icon(Icons.brightness_1),
                         );
                       })),
-              Container(
-                height: 200,
-                child: ListView.builder(
-                    itemCount: Rating.length,
-                    reverse: true,
-                    itemBuilder: (context, index) {
-                      return Row(
-                        children: [
-                          RatingBar.builder(
-                              itemSize: 20,
-                              ignoreGestures: true,
-                              initialRating: index.toDouble() + 1,
-                              allowHalfRating: true,
-                              itemBuilder: (context, _) => Icon(
-                                    Icons.star,
-                                    color: Colors.amber,
-                                  ),
-                              onRatingUpdate: (rating) {}),
-                          Text(
-                            "${index + 1} ${Rating[index]}",
-                            textAlign: TextAlign.left,
-                          ),
-                        ],
-                      );
-                    }),
-              )
             ],
           ),
         )

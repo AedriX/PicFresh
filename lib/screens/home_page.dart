@@ -175,114 +175,117 @@ class _HomePageState extends State<HomePage> {
           ),
           SliverToBoxAdapter(
             //Pemanggilan Query Recipes dan Membuat ListView(Start)
-            child: Container(
-              height: MediaQuery.of(context).size.height,
-              margin: const EdgeInsets.only(left: 15, right: 15),
-              child: StreamBuilder<QuerySnapshot>(
-                stream: recipe,
-                builder: (
-                  BuilderContext,
-                  AsyncSnapshot<QuerySnapshot> snapshot,
-                ) {
-                  if (snapshot.hasError) {
-                    return Text("Cek Koneksi internet anda");
-                  }
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(
-                      child: CircularProgressIndicator(
-                        color: Colors.blue,
-                      ),
-                    );
-                  }
+            child: SingleChildScrollView(
+              child: Container(
+                height: 1950,
+                margin: const EdgeInsets.only(left: 15, right: 15),
+                child: StreamBuilder<QuerySnapshot>(
+                  stream: recipe,
+                  builder: (
+                    BuilderContext,
+                    AsyncSnapshot<QuerySnapshot> snapshot,
+                  ) {
+                    if (snapshot.hasError) {
+                      return Text("Cek Koneksi internet anda");
+                    }
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(
+                        child: CircularProgressIndicator(
+                          color: Colors.blue,
+                        ),
+                      );
+                    }
 
-                  final data = snapshot.requireData;
+                    final data = snapshot.requireData;
 
-                  return GridView.builder(
-                      physics: const NeverScrollableScrollPhysics(),
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2),
-                      itemCount: data.size < 20 ? data.size : 20,
-                      itemBuilder: (context, index) {
-                        double staraverage =
-                            avgRating(data.docs[index]["rating"], 4);
-                        //Bagian tampilan New Recipes (Start)
-                        return GridTile(
-                          child: Container(
-                            padding: EdgeInsets.all(3),
-                            child: Card(
-                              elevation: 5,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10)),
-                              child: InkWell(
-                                onTap: () => Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => DetailPage(
-                                        documentSnapshot: data.docs[index]),
+                    return GridView.builder(
+                        physics: const NeverScrollableScrollPhysics(),
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2),
+                        itemCount: data.size < 20 ? data.size : 20,
+                        itemBuilder: (context, index) {
+                          double staraverage =
+                              avgRating(data.docs[index]["rating"], 4);
+                          //Bagian tampilan New Recipes (Start)
+                          return GridTile(
+                            child: Container(
+                              padding: EdgeInsets.all(3),
+                              child: Card(
+                                elevation: 5,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10)),
+                                child: InkWell(
+                                  onTap: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => DetailPage(
+                                          documentSnapshot: data.docs[index]),
+                                    ),
                                   ),
-                                ),
-                                child: Ink(
-                                  child: Column(
-                                    children: [
-                                      ClipRRect(
-                                        borderRadius: BorderRadius.only(
-                                            topLeft: Radius.circular(10),
-                                            topRight: Radius.circular(10)),
-                                        child: Image.network(
-                                          "${data.docs[index]["imageUrl"]}",
-                                          height: 100,
+                                  child: Ink(
+                                    child: Column(
+                                      children: [
+                                        ClipRRect(
+                                          borderRadius: BorderRadius.only(
+                                              topLeft: Radius.circular(10),
+                                              topRight: Radius.circular(10)),
+                                          child: Image.network(
+                                            "${data.docs[index]["imageUrl"]}",
+                                            height: 100,
+                                            width: double.infinity,
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          height: 5,
+                                        ),
+                                        Container(
                                           width: double.infinity,
-                                          fit: BoxFit.cover,
-                                        ),
-                                      ),
-                                      const SizedBox(
-                                        height: 5,
-                                      ),
-                                      Container(
-                                        width: double.infinity,
-                                        height: 40,
-                                        padding: EdgeInsets.only(left: 12),
-                                        child: Text(
-                                          "${data.docs[index]["name"]}",
-                                          style: TextStyle(fontSize: 16),
-                                        ),
-                                      ),
-                                      Spacer(),
-                                      Row(
-                                        children: [
-                                          SizedBox(
-                                            width: 10,
+                                          height: 40,
+                                          padding: EdgeInsets.only(left: 12),
+                                          child: Text(
+                                            "${data.docs[index]["name"]}",
+                                            style: TextStyle(fontSize: 16),
                                           ),
-                                          RatingBar.builder(
-                                              itemSize: 14,
-                                              ignoreGestures: true,
-                                              initialRating: staraverage,
-                                              allowHalfRating: true,
-                                              itemBuilder: (context, _) => Icon(
-                                                    Icons.star,
-                                                    color: Colors.amber,
-                                                  ),
-                                              onRatingUpdate: (rating) {}),
-                                          Text(
-                                            "(${staraverage.toStringAsPrecision(2)})",
-                                            textAlign: TextAlign.left,
-                                          ),
-                                        ],
-                                      ),
-                                      SizedBox(
-                                        height: 6,
-                                      )
-                                    ],
+                                        ),
+                                        Spacer(),
+                                        Row(
+                                          children: [
+                                            SizedBox(
+                                              width: 10,
+                                            ),
+                                            RatingBar.builder(
+                                                itemSize: 14,
+                                                ignoreGestures: true,
+                                                initialRating: staraverage,
+                                                allowHalfRating: true,
+                                                itemBuilder: (context, _) =>
+                                                    Icon(
+                                                      Icons.star,
+                                                      color: Colors.amber,
+                                                    ),
+                                                onRatingUpdate: (rating) {}),
+                                            Text(
+                                              "(${staraverage.toStringAsPrecision(2)})",
+                                              textAlign: TextAlign.left,
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          height: 6,
+                                        )
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
-                          ),
-                        );
-                        //Bagian tampilan New Recipes (End)
-                      });
-                },
+                          );
+                          //Bagian tampilan New Recipes (End)
+                        });
+                  },
+                ),
               ),
             ),
             //Pemanggilan Query Recipes dan Membuat ListView(End)
